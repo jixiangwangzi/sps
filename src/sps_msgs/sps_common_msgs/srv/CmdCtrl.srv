@@ -1,0 +1,10 @@
+std_msgs/Header header
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED = -9000
+int32 REPEAT_CMD = -9004
+
+
+int32 result
+string description

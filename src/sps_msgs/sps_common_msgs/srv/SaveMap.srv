@@ -1,0 +1,14 @@
+std_msgs/Header header
+string full_name
+
+---
+
+int32 result
+string description
+
+int32 SUCCESS = 0
+int32 FAILED = -301
+int32 NOT_START = -302
+int32 PATH_UNVALID = -303
+int32 MAP_NO_DATA = -304
+

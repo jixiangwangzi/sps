@@ -1,0 +1,110 @@
+
+<!--
+  This Behavior Tree replans the global path periodically at 1 Hz through an array of poses continuously
+   and it also has recovery actions specific to planning / control as well as general system issues.
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="300" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="3.0">
+          <Sequence>
+            <Fallback>
+              <Inverter>
+                <GlobalUpdatedGoal/>
+              </Inverter>
+              <Sequence name="ClearingActions">
+                <ClearPath input_path="{truncate_path}" output_path="{truncate_path}"/>
+                <ClearAppointedCostmap name="ClearLocalCostmap-GoalUpdate" service_name="local_costmap/clear_appointed_local_costmap" server_timeout="2000" />
+                <ClearAppointedCostmap name="ClearGlobalCostmap-GoalUpdate" service_name="global_costmap/clear_appointed_global_costmap" server_timeout="2000" />
+              </Sequence>
+            </Fallback>            
+            <RecoveryNode number_of_retries="1" name="ComputePathThroughPoses">
+              <Fallback>
+                <TaskPauseCondition is_pause_task="{is_pause_task}"/> 
+                <Sequence name="RemoveGoalAndWait">
+                  <RemovePassedGoals input_goals="{goals}" output_goals="{goals}" radius="1.0"/>
+                  <ReactiveSequence>
+                    <Inverter>
+                      <GlobalUpdatedGoal/>
+                    </Inverter>
+                    <Inverter>
+                      <NewPathLongerCondition path="{truncate_path}" length_factor="1.2" detour_len="4.0" oscillation_threshold="1.57" force_update_seconds="2.0" wait_time="120.0" detour_wait_state="{detour_wait_state}"/>
+                    </Inverter>                                                   
+                    <Inverter>
+                      <PathExpiringTimer seconds="10.0" path="{path}"/>
+                    </Inverter>                   
+                    <IsGlobalPathValid path="{truncate_path}"/>
+                    <TruncateRealtimePath input_path="{path}" output_path="{truncate_path}"/>
+                  </ReactiveSequence>
+                </Sequence>  
+                <ReactiveSequence name="CheckGoalAndComputePath">
+                  <Fallback>
+                    <Inverter>
+                      <IsGoalSafetyCondition path="{truncate_path}" check_dist_threshold="2.5" wait_time="120.0" server_timeout="2000"/>
+                    </Inverter>
+                    <ComputePathThroughPoses goals="{goals}" path="{path}" planner_id="GridBased"/>  
+                  </Fallback>  
+                  <TruncateRealtimePath input_path="{path}" output_path="{truncate_path}"/> 
+                </ReactiveSequence> 
+              </Fallback>
+              <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
+                <GoalUpdated/>
+                <ClearAppointedCostmap name="ClearGlobalCostmap-GoalUpdate" service_name="global_costmap/clear_appointed_global_costmap" server_timeout="2000" />
+              </ReactiveFallback>
+            </RecoveryNode>
+          </Sequence>
+        </RateController>
+        <ReactiveSequence name="MonitorAndFollowPath">
+          <TaskPauseController is_pause_task="{is_pause_task}">
+            <RetryUntilSuccessful num_attempts="1">
+              <SequenceStar name="CancelingControlAndWait">
+                <CancelControl name="ControlCancel"/>
+                <!-- Todo add temporary parking control -->
+              </SequenceStar>
+            </RetryUntilSuccessful>
+          </TaskPauseController>         
+          <IsGoalSafetyController path="{truncate_path}" check_dist_threshold="2.5" wait_time="120.0" controller_frequency="15.0" server_timeout="2000" >
+            <RetryUntilSuccessful num_attempts="1">
+              <SequenceStar name="CancelingControlAndWait">
+                <CancelControl name="ControlCancel"/>
+                <!-- Todo add temporary parking control -->
+              </SequenceStar>
+            </RetryUntilSuccessful>
+          </IsGoalSafetyController>  
+          <PathLongerOnApproach detour_wait_state="{detour_wait_state}" path="{truncate_path}" length_factor="1.2" detour_len="4.0" force_update_seconds="2.0">
+            <RetryUntilSuccessful num_attempts="10">
+              <SequenceStar name="CancelingControlAndWait">
+                <CancelControl name="ControlCancel"/>
+                <!-- Todo add temporary parking control -->
+              </SequenceStar>
+            </RetryUntilSuccessful>
+          </PathLongerOnApproach>             
+          <RecoveryNode number_of_retries="1" name="FollowPath">
+            <FollowPath path="{truncate_path}" controller_id="FollowPath"/>
+            <Fallback>
+              <Inverter>
+                <TimeTick seconds="2.0"/>
+              </Inverter>
+              <ClearAppointedCostmap name="ClearLocalCostmap-FollowPath" service_name="local_costmap/clear_appointed_local_costmap" server_timeout="2000" />
+            </Fallback> 
+          </RecoveryNode>            
+        </ReactiveSequence> 
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <Fallback>
+          <Inverter>
+            <TimeTick seconds="2.0"/>
+          </Inverter>
+          <RoundRobin name="RecoveryActions">
+            <Sequence name="ClearingActions">
+              <ClearAppointedCostmap name="ClearLocalCostmap-Recovery" service_name="local_costmap/clear_appointed_local_costmap" server_timeout="2000" />
+              <ClearAppointedCostmap name="ClearGlobalCostmap-Recovery" service_name="global_costmap/clear_appointed_global_costmap" server_timeout="2000" />
+            </Sequence>
+          </RoundRobin>
+        </Fallback> 
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>

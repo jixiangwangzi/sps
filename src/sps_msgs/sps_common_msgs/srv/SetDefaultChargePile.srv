@@ -1,0 +1,14 @@
+std_msgs/Header header
+string map_id
+string map_name
+string charger_name
+PixelPose pixel_pose
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-1
+
+
+int32 result
+string description
+

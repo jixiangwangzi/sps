@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+    <BehaviorTree ID="BehaviorTree">
+        <Sequence>
+            <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased" start=""/>
+            <TimeOutDecorator time_out="20">
+                <FollowPath controller_id="TrackPath" goal_checker_id="precise_goal_checker" path="{path}"/>
+            </TimeOutDecorator>
+        </Sequence>
+    </BehaviorTree>
+</root>

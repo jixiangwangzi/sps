@@ -1,0 +1,36 @@
+std_msgs/Header header
+geometry_msgs/Pose[] poses
+uint8 pose_type
+uint8 scene_type
+uint8 match_type
+
+#坐标类型
+uint8 INIT_POSE = 0 #初始化位姿
+uint8 LOCAL_POSE = 1 #局部重定位位姿
+uint8 GLOBAL_POSE = 2 #全局重定位位姿
+uint8 PREDICT_POSE = 3 #云端预测位姿
+
+#场景类型
+uint8 UNKNOWN = 0                       #未知类型(一般为地图原点)
+uint8 CHARGING_PILE = 1                 #充电桩
+uint8 LIFT_INTERIOR= 2                  #电梯内点
+uint8 START_UP_WITH_SAVED_POSE = 3      #开机启动(用上次保存的位姿)
+uint8 SWITCH_MAP_WITH_SAVED_POSE = 4    #切换地图(用上次保存的位姿)
+uint8 CLOUD_INSTRUCTION = 5             #云端指令
+
+#传感器数据与地图匹配类型
+uint8 NONE = 0 #不与地图匹配
+uint8 LIDAR = 1  #使用激光数据匹配
+uint8 CAMERA = 2 #使用视觉数据匹配
+uint8 ALL = 3 #使用所有数据匹配
+---
+# Result code defintions
+int32 SUCCESS = 0
+int32 FAILED = -501
+int32 MODE_ERROR = -502
+int32 POSE_UNVALID = -503
+int32 SETTING_POSE = -504
+
+int32 result
+string description
+

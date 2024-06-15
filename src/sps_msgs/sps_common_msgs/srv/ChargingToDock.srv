@@ -1,0 +1,18 @@
+std_msgs/Header header
+string task_id
+bool ctrl_cmd
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED = -1
+int32 LINE_CHARGING = -8
+int32 DOCK_CHARGING = -9
+int32 ROBOT_ERROR = -10
+int32 NO_CHARGER_FOUND = -11
+
+
+
+int32 result
+string description
+
+

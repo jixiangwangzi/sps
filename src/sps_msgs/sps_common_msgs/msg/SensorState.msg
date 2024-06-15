@@ -1,0 +1,9 @@
+std_msgs/Header header
+bool is_imu_ok
+bool is_3dlidar_ok
+bool is_2dlidar_ok
+bool is_odom_ok
+bool is_ultra_ok
+bool is_bumper_ok
+bool is_barometer_ok
+bool is_camera_ok

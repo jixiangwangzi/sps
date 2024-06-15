@@ -1,0 +1,17 @@
+std_msgs/Header header
+PixelPose pixel_pose
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-1
+
+int32 UNKOWN_POINT = -1
+int32 INNER_POINT = 0
+int32 ENTRY_POINT = 1
+int32 OUT_POINT = 2
+
+int32 result
+string description
+int32 lift_poi_type
+string lift_id
+

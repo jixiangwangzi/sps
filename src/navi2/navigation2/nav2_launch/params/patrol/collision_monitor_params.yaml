@@ -1,0 +1,57 @@
+collision_monitor:
+  ros__parameters:
+    use_sim_time: True
+    base_frame_id: "base_footprint"
+    odom_frame_id: "odom"
+    cmd_vel_in_topic: "cmd_vel_raw"
+    max_vel: 0.7
+    cmd_vel_out_topic: "navigation/cmd_vel"
+    cmd_vel_out_topic_twiststamped: "chassis/cmd_vel"
+    transform_tolerance: 0.5
+    source_timeout: 5.0
+    stop_pub_timeout: 2.0
+    # Polygons represent zone around the robot for "stop" and "slowdown" action types,
+    # and robot footprint for "approach" action type.
+    # Footprint could be "polygon" type with dynamically set footprint from footprint_topic
+    # or "circle" type with static footprint set by radius. "footprint_topic" parameter
+    # to be ignored in circular case.
+    polygons: ["FootprintApproach"] 
+    FootprintApproach:
+      type: "polygon"
+      action_type: "approach"
+      footprint_topic: "/local_costmap/published_footprint"
+      time_before_collision: 2.0
+      simulation_time_step: 0.1
+      max_points: 5
+      visualize: True
+      polygon_pub_topic: "polygon_approach"
+    observation_sources: ["scan_rslidar_3d","scan","depth_scan"] #"scan","depth_scan"
+    scan_rslidar_3d:
+      type: "scan"
+      topic: "/scan_rslidar_3d"
+      min_obstacle_range: 0.0
+      max_obstacle_range: 4.0
+    scan:
+      type: "scan"
+      topic: "/scan"
+      min_obstacle_range: 0.0
+      max_obstacle_range: 2.0
+    depth_scan:
+      type: "scan"
+      topic: "/depth/scan"
+      min_obstacle_range: 0.0
+      max_obstacle_range: 1.5
+
+    drop_detection_switch: true
+    car_type: "patrol"
+    inflexible_detection:
+      ultras_detection_open: true
+      ultras_sub_topic: "all_ultra_data"
+      laser1_topic: "scan" #scan_rslidar_3d
+      lidar_frame: "rslidar"
+      base_frame: "base_link"
+      diff_mode_min_turning_radius: 0.6
+      min_range_threshold: 0.03
+      forward_emergency_stop_dist: 0.05
+      turn_emergency_stop_dist: 0.1
+      visualize_lidar_cloud: true

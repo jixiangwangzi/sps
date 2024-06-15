@@ -1,0 +1,11 @@
+int32 mode_type
+geometry_msgs/PoseStamped[] tag_id_pose
+---
+int32 result
+string feedback
+
+int32 SUCCESS = 0 
+int32 FAILED = -501
+int32 PATH_UNVALID = -11
+int32 NO_DATA = -22
+int32 MODE_ERR = -33

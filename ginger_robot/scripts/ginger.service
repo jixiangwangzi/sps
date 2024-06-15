@@ -1,0 +1,14 @@
+[Unit]
+Description=Ginger Lite Service
+After=network.target
+
+[Service]
+User=ginger
+EnvironmentFile=/vendor/ginger_robot/scripts/EnvironmentFile
+WorkingDirectory=/vendor/ginger_robot
+ExecStart=/vendor/ginger_robot/scripts/ginger_robot_start.sh
+Restart=no
+KillSignal=2
+
+[Install]
+WantedBy=multi-user.target

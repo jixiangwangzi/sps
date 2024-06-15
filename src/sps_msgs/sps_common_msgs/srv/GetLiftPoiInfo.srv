@@ -1,0 +1,24 @@
+std_msgs/Header header
+string lift_id
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-1
+
+
+int32 result
+string description
+
+string name
+string group_id               # 电梯id, lift_id
+geometry_msgs/Pose inner_poi   # 电梯内点,每个电梯1个
+geometry_msgs/Pose out_poi     # 出电梯点, 每个电梯1个, 分布在电梯门中轴线上, map frame
+geometry_msgs/Pose[] entry_poi           # 入电梯点, 每个电梯2个, 分布在电梯门两侧, 电梯外面对门, 左, 右排序, map frame
+geometry_msgs/Pose[] door_poi            # 电梯门上的两个点, 电梯外面对门, 左, 右排序, map frame
+geometry_msgs/Pose[] corner_poi          # 电梯轿厢四个角点, 电梯外面向门, 左为第一个点, 逆时针排序, map frame
+
+PixelPose pixel_out_poi
+PixelPose pixel_inner_poi
+PixelPose[] pixel_entry_poi
+PixelPose[] pixel_door_poi #电梯门上的两个像素点
+PixelPose[] pixel_corner_poi # 箱体角点

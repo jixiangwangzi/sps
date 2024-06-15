@@ -1,0 +1,21 @@
+uint8 CANCEL = 1
+uint8 PAUSE = 2
+uint8 RESUME = 3
+
+std_msgs/Header header
+
+string task_id
+uint8 ctrl_cmd
+
+---
+
+int32 result
+string description
+
+int32 SUCCESS = 0
+int32 FAILED = -701
+int32 MODE_ERROR = -702
+int32 ID_UNVALID = -703
+int32 NO_ACTIVE_TASK = -704
+int32 NO_PAUSED_TASK = -705
+int32 ANOTHER_TASK_RUNNING = -706

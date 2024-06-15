@@ -1,0 +1,14 @@
+std_msgs/Header header
+string node_name
+string param_name
+string param_data
+
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-7101
+
+
+int32 result
+
+

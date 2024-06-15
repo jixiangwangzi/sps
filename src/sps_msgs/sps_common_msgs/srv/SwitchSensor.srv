@@ -1,0 +1,22 @@
+
+uint8 IMU=0
+uint8 BIGLIDAR=1
+uint8 SMALLLIDAR=2
+uint8 ODOM=3
+uint8 ULTRA=4
+uint8 BUMPER=5
+uint8 CAMERA=6
+uint8 BAROMETER=7
+
+std_msgs/Header header
+uint8 sensor_type
+bool state
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-7001
+
+
+int32 result
+
+

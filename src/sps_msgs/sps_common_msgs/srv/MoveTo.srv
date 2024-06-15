@@ -1,0 +1,13 @@
+std_msgs/Header header
+bool collision_check
+float32 distance
+float32 speed
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-7201
+
+
+int32 result
+
+

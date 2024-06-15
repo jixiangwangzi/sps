@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<launch> 
+    <!-- <param name="use_sim_time" value="true" /> -->
+    <!-- <include file="$(find laser_line_extraction)/launch/line_extractor.launch" /> -->
+    <arg name="cartographer_args"     default="
+        -configuration_cloud_directory /home/ginger/hari_dyna_params
+        -configuration_cloud_basename cloud_cartographer.lua          
+        -configuration_directory $(find lidar_slam)/params/cartographer_ginger
+        -configuration_basename cartographer.lua" />
+    
+    <node pkg="lidar_slam" type="lidar_slam_node" name="lidar_slam_node" respawn="true" args="$(arg cartographer_args)" output="screen" >
+        <rosparam file="$(find lidar_slam)/params/slam.yaml" command="load" ns="slam" />
+    </node>
+
+
+</launch>

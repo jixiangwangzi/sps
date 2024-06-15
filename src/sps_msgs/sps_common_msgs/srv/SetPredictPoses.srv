@@ -1,0 +1,18 @@
+uint8 GRID_POSE = 0
+uint8 MAP_POSE = 1
+
+
+std_msgs/Header header
+uint8 pose_type
+geometry_msgs/Pose[] poses
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED = -501
+int32 MODE_ERROR = -502
+int32 POSE_UNVALID = -503
+
+
+int32 result
+string description
+

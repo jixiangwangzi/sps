@@ -1,0 +1,10 @@
+#goal definition
+float32 truncate_distance
+float32 near_to_goal_length
+nav_msgs/Path global_path
+---
+#result definition
+nav_msgs/Path result_path
+builtin_interfaces/Duration planning_time
+---
+#feedback definition

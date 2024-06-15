@@ -1,0 +1,7 @@
+# Clears the costmap within a distance
+bool mark
+float32 half_width
+float32 forward_dist
+nav_msgs/Path global_path
+---
+bool clear

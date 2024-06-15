@@ -1,0 +1,390 @@
+topics:
+  -
+    topic: /sps_ultrasonic
+    type: cm_msgs/msg/SpsUltrasonic
+    queue_size: 1
+  -
+    topic: /rslidar_points_filter
+    type: sensor_msgs/msg/PointCloud2
+    queue_size: 1
+  -
+    topic: /chassis/cmd_lock
+    type: geometry_msgs/msg/TwistStamped
+    queue_size: 1
+  -
+    topic: /rotation_status
+    type: std_msgs/msg/Int32
+    queue_size: 1
+  -
+    topic: /VisualDrop
+    type: std_msgs/msg/Int32
+    queue_size: 1
+  -
+    topic: /EStop
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /sps_HA_state
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /VisualDropSwitch
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /sps_depth_scan_switch
+    type: std_msgs/msg/Bool
+    queue_size: 1
+  -
+    topic: /nav2_max_vel
+    type: std_msgs/msg/Float32
+    queue_size: 1
+  -
+    topic: /navi_type
+    type: std_msgs/msg/Int32
+    queue_size: 1
+  -
+    topic: /all_ultra_data
+    type: sensor_msgs/msg/ChannelFloat32
+    queue_size: 1  
+  -
+    topic: /navigation/cmd_vel
+    type: geometry_msgs/msg/Twist
+    queue_size: 1
+  -
+    topic: /cmd_vel_raw
+    type: geometry_msgs/msg/Twist
+    queue_size: 1
+  -
+    topic: /polygon_approach
+    type: geometry_msgs/msg/PolygonStamped
+    queue_size: 1
+  -
+    topic: /chassis/cmd_vel
+    type: geometry_msgs/msg/TwistStamped
+    queue_size: 1
+  -
+    topic: /cmdVelocityStamped
+    type: geometry_msgs/msg/TwistStamped
+    queue_size: 1    
+  -
+    topic: /initialpose
+    type: geometry_msgs/msg/PoseWithCovarianceStamped
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /move_base_simple/goal
+    type: geometry_msgs/msg/PoseStamped
+    queue_size: 1
+  -
+    topic: /joint_states
+    type: sensor_msgs/msg/JointState
+    queue_size: 1
+  -
+    topic: /scan
+    type: sensor_msgs/msg/LaserScan
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: best_effort
+      durability: volatile
+  -
+    topic: /depth/scan
+    type: sensor_msgs/msg/LaserScan
+    queue_size: 1
+  -
+    topic: /laserscan_filter
+    type: sensor_msgs/msg/LaserScan
+    queue_size: 1
+  -
+    topic: /depthscan_filter
+    type: sensor_msgs/msg/LaserScan
+    queue_size: 1
+  -
+    topic: /rslidar_laserscan
+    type: sensor_msgs/msg/LaserScan
+    queue_size: 1
+  -
+    topic: /scan_rslidar_3d
+    type: sensor_msgs/msg/LaserScan
+    queue_size: 1    
+  -
+    topic: /sonar_scan
+    type: sensor_msgs/msg/LaserScan
+    queue_size: 1             
+  -
+    topic: /BatteryState
+    type: cm_msgs/msg/BatteryState
+    queue_size: 1
+  -
+    topic: /dock_state
+    type: cm_msgs/msg/DockState
+    queue_size: 1
+  -
+    topic: /tf
+    type: tf2_msgs/msg/TFMessage
+    queue_size: 10
+  -
+    topic: /tf_static
+    type: tf2_msgs/msg/TFMessage
+    queue_size: 50
+    qos:
+      history: keep_all
+      depth: 20
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /odom
+    type: nav_msgs/msg/Odometry
+    queue_size: 10
+  -
+    topic: /occ_map
+    type: nav_msgs/msg/OccupancyGrid
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /occ_map_info
+    type: nav_msgs/msg/MapMetaData
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /update_occsubmap
+    type: nav_msgs/msg/OccupancyGrid
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /virtualwalls
+    type: cm_msgs/msg/Virtualwalls
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /task_manager/navigation2_state
+    type: cm_msgs/msg/Nav2State
+    queue_size: 10
+    qos:
+      history: keep_all
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /waypoint_follower/wait_resume_feedback
+    type: cm_msgs/msg/WaitResumeFeedback
+    qos:
+      history: keep_all
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /global_costmap/published_footprint
+    type: geometry_msgs/msg/PolygonStamped
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /planner_costmap/published_footprint
+    type: geometry_msgs/msg/PolygonStamped
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /local_plan_global
+    type: nav_msgs/msg/Path
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /local_plan_path
+    type: nav_msgs/msg/Path
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /plan
+    type: nav_msgs/msg/Path
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /local_costmap/published_footprint
+    type: geometry_msgs/msg/PolygonStamped
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /local_plan
+    type: nav_msgs/msg/Path
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 5
+      reliability: reliable
+      durability: volatile
+  -
+    topic: /teb_poses
+    type: geometry_msgs/msg/PoseArray
+    queue_size: 1
+  -
+    topic: /initialpose_self
+    type: cm_msgs/msg/InitialSlamPose
+    queue_size: 1
+    qos:
+      history: keep_last
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /sps_navi_state
+    type: cm_msgs/msg/SpsNaviState
+    queue_size: 1
+    qos:
+      history: keep_last
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /local_state
+    type: cm_msgs/msg/LocalState
+    queue_size: 1
+    qos:
+      history: keep_last
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /sps_slam_report
+    type: cm_msgs/msg/SpsSlamReport
+    queue_size: 1
+    qos:
+      history: keep_last
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /shutdown_cmd
+    type: std_msgs/msg/Int8
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /SpsDropCollision
+    type: cm_msgs/msg/SpsDropCollision
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /SpsHWError
+    type: cm_msgs/msg/SpsHWError
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /update_occmap
+    type: nav_msgs/msg/OccupancyGrid
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /bit_map
+    type: cm_msgs/msg/BitMap
+    queue_size: 1
+    qos:
+      history: keep_last
+      depth: 1
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /sps_rdm_alarm
+    type: cm_msgs/msg/SpsRdmAlarm
+    queue_size: 1
+    qos:
+      history: keep_last
+      reliability: reliable
+      durability: transient_local
+  -
+    topic: /obstacle
+    type: std_msgs/msg/Float64
+    queue_size: 1
+    qos:
+      history: keep_last
+      reliability: reliable
+      durability: transient_local
+
+services_1_to_2:
+  -
+    service: /task_manager/nav_to
+    type: cm_msgs/srv/Nav2
+  -
+    service: /waypoint_follower/resume_follow_waypoints
+    type: cm_msgs/srv/ResumeFollowWaypoints
+  -
+    service: /task_navi_to_pose
+    type: cm_msgs/srv/NaviToPose
+  -
+    service: /task_navi_through_poses
+    type: cm_msgs/srv/NaviPoses
+  -
+    service: /task_navi_cmd
+    type: cm_msgs/srv/TaskNaviCmd
+  -
+    service: /sps_switch_map
+    type: cm_msgs/srv/SpsLoadMap
+  -
+    service: /set_pose_initialize
+    type: cm_msgs/srv/SetPoseInitialize
+  -
+    service: /sps_set_slam_model
+    type: cm_msgs/srv/SpsSetSlamModel
+  -
+    service: /sps_set_navi_vel
+    type: cm_msgs/srv/SpsNaviVel
+  -
+    service: /navi_poses_mileage
+    type: cm_msgs/srv/GetPosesMileage
+  -
+    service: /make_plan
+    type: nav_msgs/srv/GetPlan

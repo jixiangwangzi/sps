@@ -1,0 +1,11 @@
+/**:
+  ros__parameters:
+    #/cloudminds/map_server
+    home_path: /home/ginger
+    static_pose_upload_fps: 1.0
+    threshold_free: 0.25
+    threshold_occupied: 0.65
+
+    #/cloudminds/server_interface
+    robot_naviengine_bt: /bt_resource/robot_naviengine_bt.xml
+    main_drop_switch: True

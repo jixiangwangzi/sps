@@ -1,0 +1,12 @@
+std_msgs/Header header
+string lift_id
+float32 lift_safe_dist
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-1
+
+
+int32 result
+string description
+

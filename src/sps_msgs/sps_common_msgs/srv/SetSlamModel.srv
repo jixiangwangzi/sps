@@ -1,0 +1,26 @@
+int32 SLAM_IDLE = 1300 
+int32 SLAM_MAPPING = 1301
+int32 SLAM_LOC  = 1302
+int32 SLAM_MAPPING_PART_INCREMENTAL  = 1303
+int32 SLAM_MAPPING_ALL_INCREMENTAL_AND_ALIGN = 1304
+int32 SLAM_MAPPING_ODOM_CALIB  = 1305
+
+
+
+
+std_msgs/Header header
+int32 slam_mode
+
+
+---
+# Result code defintions
+int32 SUCCESS = 0
+int32 FAILED = -201
+int32 REPEAT_CMD  = -202
+
+
+
+int32 result
+string description
+
+

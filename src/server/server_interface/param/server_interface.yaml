@@ -1,0 +1,3 @@
+/cloudminds/server_interface:
+   ros__parameters:
+      robot_naviengine_bt: /bt_resource/robot_naviengine_bt.xml

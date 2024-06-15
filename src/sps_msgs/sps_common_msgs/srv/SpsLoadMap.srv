@@ -1,0 +1,18 @@
+std_msgs/Header header
+string map_path
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-401
+int32 MODE_ERROR=-402
+int32 NO_MAP_PNG=-403
+int32 NO_MAP_YAML=-404
+int32 MAP_PNG_UNVALID=-405
+int32 MAP_YAML_UNVALID=-406
+int32 NO_MAP_PBSTREAM = -407
+int32 MAP_PBSTREAM_UNVALID = -408
+int32 NO_MAP_PCD = -409
+int32 MAP_PCD_UNVALID = -410
+
+int32 result
+string description

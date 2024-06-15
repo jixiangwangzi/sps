@@ -1,0 +1,12 @@
+std_msgs/Header header
+geometry_msgs/Twist twist
+bool collision_check
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-7201
+
+
+int32 result
+
+

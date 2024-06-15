@@ -1,0 +1,27 @@
+std_msgs/Header header
+PixelPose pixel_pose
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-1
+
+int32 UNKOWN_TYPE=-1
+int32 NORMAL_POI=0
+int32 CHARGER_POI=1
+int32 LIFT_ENTRY_POI=2
+int32 LIFT_INNER_POI=3
+int32 LIFT_CORNER_POI=4
+int32 DOOR_POI=5
+int32 RELOCALIZATION_POI=6
+int32 LIFT_OUT_POI=7
+int32 LIFT_WAITING_POI=8
+int32 CHARGER_WAITING_POI=9
+int32 TEM_STOP_POI=10
+int32 FOOD_DELIVERY_POI=11
+int32 DISINFECTION_WAREHOUSE_POI=12
+int32 TAG_POI=13
+
+int32 result
+string description
+int32 poi_type
+

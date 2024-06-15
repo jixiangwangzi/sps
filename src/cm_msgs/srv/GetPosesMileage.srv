@@ -1,0 +1,19 @@
+uint8 GRID_POSE = 0
+uint8 MAP_POSE = 1
+
+
+std_msgs/Header header
+uint8 pose_type
+geometry_msgs/Pose start_pose
+geometry_msgs/Pose target_pose
+
+---
+# Result code defintions
+int32 SUCCESS = 0
+int32 FAILED = -1
+
+
+int32 result
+string description
+float64 mileage
+

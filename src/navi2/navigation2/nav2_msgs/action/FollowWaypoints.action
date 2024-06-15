@@ -1,0 +1,11 @@
+#goal definition
+uint8 TMP_STOP = 100
+
+geometry_msgs/PoseStamped[] poses
+uint8[] types
+---
+#result definition
+int32[] missed_waypoints
+---
+#feedback
+uint32 current_waypoint

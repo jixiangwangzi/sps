@@ -1,0 +1,40 @@
+uint8 GRID_POSE = 0
+uint8 MAP_POSE = 1
+
+uint8 NORMAL_NAVI = 0
+uint8 LIFT_NAVI = 1
+uint8 CHARGE_NAVI = 2
+uint8 LIFT_NAVI_OUT = 3
+uint8 IGNORE_ANGLE = 4
+
+
+std_msgs/Header header
+string task_id
+uint8 type
+uint8 pose_type
+geometry_msgs/Pose pose
+geometry_msgs/Twist twist
+string bt_xml_filename
+bool align_angle
+---
+# Result code defintions
+int32 SUCCESS = 0
+int32 FAILED = -1
+int32 MODE_ERROR = -2
+int32 UNKNOWN_TYPE = -3
+int32 NAME_UNVALID = -4
+int32 POSE_UNVALID = -5
+int32 PLAN_FAILED = -6
+int32 VEL_UNVALID = -7
+int32 LINE_CHARGING = -8
+int32 DOCK_CHARGING = -9
+int32 ROBOT_BLOCKED = -10
+int32 NO_CHARGER_FOUND = -11
+int32 BATTERY_LEVEL_LOW = -12
+int32 TASK_CONFLICT = -13
+
+
+int32 result
+string description
+
+

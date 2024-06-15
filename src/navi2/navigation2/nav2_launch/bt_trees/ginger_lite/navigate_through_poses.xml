@@ -1,0 +1,38 @@
+<!--
+  1.modified by xiong @20221207
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <MainSequence name="MainNavigationModule">
+      <Sequence>
+        <IfThenElse>
+          <GlobalUpdatedGoal/>
+          <Sequence name="ClearingActions">
+            <!--ClearStaticCostmap mark="false" forward_dist="1.0" half_width="1.0" path="{path}" server_timeout="2000"/-->
+            <ClearEntireCostmap name="ClearLocalCostmap-GoalUpdate" server_timeout="2000" service_name="local_costmap/clear_entirely_local_costmap"/>
+            <ClearEntireCostmap name="ClearGlobalCostmap-GoalUpdate" server_timeout="2000" service_name="global_costmap/clear_entirely_global_costmap"/>
+          </Sequence>
+          <!--ClearStaticCostmap mark="true" forward_dist="1.0" half_width="1.0" path="{path}" server_timeout="2000"/-->
+        </IfThenElse>
+        <ComputePathThroughPoses goals="{goals}" path="{path}" planner_id="GridBased"/>  
+      </Sequence>
+      <RateController hz="5.0">
+        <LocalPlannerDecorator try_time="120.0">
+	        <Fallback>	
+            <IsPathValid check_dis = "2.0" path="{path}" server_timeout="2000"/>
+	          <LocalPathPlan truncate_distance="3.6" near_to_goal_length="2.0" global_path="{path}" result_path="{path}"/>
+          </Fallback>
+        </LocalPlannerDecorator>               
+      </RateController>
+      <RateController hz="10.0">
+        <ReactiveFallback>        
+	        <ReactiveSequence>
+            <IsPathValid check_dis = "0.75" path="{path}" server_timeout="2000"/>      
+	          <FollowPath controller_id="FollowPath" goal_checker_id="precise_goal_checker" path="{path}"/>   
+          </ReactiveSequence>
+          <IntelligentDocking wait_time="20.0" wait_dist="1.0" input_path="{path}"/>
+        </ReactiveFallback>
+      </RateController>      
+    </MainSequence>
+  </BehaviorTree>
+</root>

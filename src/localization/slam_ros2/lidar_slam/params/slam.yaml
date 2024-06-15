@@ -1,0 +1,7 @@
+lidar_slam_node:
+  ros__parameters:
+    map_frame: map
+    odom_frame: odom
+    base_frame: base_footprint
+    mapping_model: 0 #0:cartographer
+    localization_model: 0 #0:cartographer

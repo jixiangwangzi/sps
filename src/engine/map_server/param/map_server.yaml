@@ -1,0 +1,6 @@
+/cloudminds/map_server:
+  ros__parameters:
+    home_path: /home/jixiang/test
+    static_pose_upload_fps: 1.0
+    threshold_free: 0.25
+    threshold_occupied: 0.65

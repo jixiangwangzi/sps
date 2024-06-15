@@ -1,0 +1,11 @@
+std_msgs/Header header
+float32 linear_max
+float32 angular_max
+
+---
+
+int32 result
+string description
+
+int32 SUCCESS = 0
+int32 FAILED = -1

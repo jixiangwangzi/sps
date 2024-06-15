@@ -1,0 +1,6 @@
+#Determine if the pose is safety
+
+geometry_msgs/PoseStamped pose
+---
+bool is_safety
+int32[] invalid_pose_indices 

@@ -1,0 +1,78 @@
+
+<!--
+  This Behavior Tree replans the global path periodically at 1 Hz through an array of poses continuously
+   and it also has recovery actions specific to planning / control as well as general system issues.
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="300" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="5.0">
+          <Sequence>
+            <Fallback>
+              <Inverter>
+                <GlobalUpdatedGoal/>
+              </Inverter>
+              <Sequence name="ClearingActions">
+                <ClearEntireCostmap name="ClearLocalCostmap-GoalUpdate" service_name="local_costmap/clear_entirely_local_costmap" server_timeout="2000" />
+                <ClearEntireCostmap name="ClearGlobalCostmap-GoalUpdate" service_name="global_costmap/clear_entirely_global_costmap" server_timeout="2000" />
+              </Sequence>
+            </Fallback>            
+            <RecoveryNode number_of_retries="1" name="ComputePathThroughPoses">
+              <Fallback>
+                <Sequence name="RemoveGoalAndWait">
+                  <RemovePassedGoals input_goals="{goals}" output_goals="{goals}" radius="0.7"/>
+                  <!-- <TruncateRealtimePath input_path="{path}" output_path="{path}"/> -->
+                  <ReactiveSequence>
+                    <Inverter>
+                      <GlobalUpdatedGoal/>
+                    </Inverter>
+                    
+                    <Inverter>
+                      <NewPathLongerCondition path="{path}" length_factor="1.2" detour_len="4.0" force_update_seconds="2.0"/>
+                    </Inverter>                                                   
+                    <Inverter>
+                      <PathExpiringTimer seconds="10.0" path="{path}"/>
+                    </Inverter>                   
+                    <IsPathValid path="{path}"/>
+                    <TruncateRealtimePath input_path="{path}" output_path="{path}"/>
+                  </ReactiveSequence>
+                </Sequence>  
+                <ComputePathThroughPoses goals="{goals}" path="{path}" planner_id="GridBased"/>
+              </Fallback>
+              <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
+                <GoalUpdated/>
+                <ClearEntireCostmap name="ClearGlobalCostmap-GoalUpdate" service_name="global_costmap/clear_entirely_global_costmap" server_timeout="2000" />
+              </ReactiveFallback>
+            </RecoveryNode>
+          </Sequence>
+        </RateController>
+        <ReactiveSequence name="MonitorAndFollowPath">
+          <!-- <TruncateRealtimePath input_path="{path}" output_path="{path}"/> -->
+          <PathLongerOnApproach path="{path}" length_factor="1.2" detour_len="4.0" force_update_seconds="2.0">
+            <RetryUntilSuccessful num_attempts="10">
+              <SequenceStar name="CancelingControlAndWait">
+                <CancelControl name="ControlCancel"/>
+                <Wait wait_duration="120" server_timeout="2000"/>
+              </SequenceStar>
+            </RetryUntilSuccessful>
+          </PathLongerOnApproach>              
+          <RecoveryNode number_of_retries="1" name="FollowPath">
+            <FollowPath path="{path}" controller_id="FollowPath"/>
+            <ClearEntireCostmap name="ClearLocalCostmap-Context" service_name="local_costmap/clear_entirely_local_costmap"/>
+          </RecoveryNode>            
+        </ReactiveSequence> 
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <RoundRobin name="RecoveryActions">
+          <Sequence name="ClearingActions">
+            <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap" server_timeout="2000"/>
+            <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap" server_timeout="2000"/>
+          </Sequence>
+        </RoundRobin>
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>
+

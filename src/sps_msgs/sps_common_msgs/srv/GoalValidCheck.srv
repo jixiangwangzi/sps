@@ -1,0 +1,11 @@
+std_msgs/Header header
+PixelPose pixel_pose
+---
+# Result code defintions
+int32 POINT_OK=0
+int32 POINT_ERROR=-1
+
+
+int32 result
+string description
+

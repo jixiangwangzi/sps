@@ -1,0 +1,25 @@
+uint8 TYPE_2D = 1
+uint8 TYPE_3D = 2
+uint8 TYPE_VSLAM = 3
+
+uint8 NORMAL_MODE = 1
+uint8 PART_INCREMENTAL_MODE = 2
+uint8 ALL_INCREMENTAL_AND_ALIGN_MODE = 3
+
+
+
+std_msgs/Header header
+uint8 mapping_type
+uint8 mapping_mode
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED = -201
+int32 REPEAT_CMD = -202
+
+
+
+int32 result
+string description
+
+

@@ -1,0 +1,16 @@
+std_msgs/Header header
+string task_id
+---
+# Result code defintions
+int32 SUCCESS = 0
+int32 FAILED = -701
+int32 MODE_ERROR = -702
+int32 ID_UNVALID = -703
+int32 NO_ACTIVE_TASK = -704
+int32 NO_PAUSED_TASK = -705
+int32 ANOTHER_TASK_RUNNING = -706
+
+
+int32 result
+string description
+

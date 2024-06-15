@@ -1,0 +1,13 @@
+# Check if objects in image
+
+# Goal definition
+int32 id
+sensor_msgs/Image image
+
+---
+# Result definition
+int32 id
+cm_msgs/BoundingBoxes bounding_boxes
+
+---
+# Feedback definition

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<launch> 
+    <param name="/use_sim_time" value="true" />
+    <!-- <node pkg="tf" type="static_transform_publisher" name="footprint_to_base" 
+        args="0 0 0 0 0 0 base_footprint base_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="base_to_laser" 
+        args="0.25 0 0.27 0 0 0 base_link laser 100" />
+	<node pkg="tf" type="static_transform_publisher" name="base_to_camera" 
+		  args="0.310 0.015 0.75 -1.78 0 -1.57 base_link camera_link 100" />
+	<node pkg="tf" type="static_transform_publisher" name="base_to_imu" 
+		  args="-0.128 0 0 0 0 0 base_link imu 100" /> -->
+    <!-- <param name="use_sim_time" value="true" /> -->
+    <!-- <include file="$(find laser_line_extraction)/launch/line_extractor.launch" /> -->
+    <arg name="cartographer_args"     default="
+        -configuration_cloud_directory /home/ginger/hari_dyna_params
+        -configuration_cloud_basename cloud_cartographer.lua
+        -configuration_directory $(find lidar_slam)/params/cartographer
+        -configuration_basename cartographer.lua" />
+    
+    <node pkg="lidar_slam" type="lidar_slam_node" name="lidar_slam_node" args="$(arg cartographer_args)" output="screen">
+        <rosparam file="$(find lidar_slam)/params/slam.yaml" command="load" ns="slam" />
+        <rosparam file="$(find lidar_slam)/params/amcl.yaml" command="load" ns="amcl"/>
+        <rosparam file="$(find lidar_slam)/params/karto.yaml" command="load" ns="karto" />
+        <rosparam file="$(find lidar_slam)/params/gmapping.yaml" command="load" ns="gmapping" />
+    </node>
+
+
+</launch>

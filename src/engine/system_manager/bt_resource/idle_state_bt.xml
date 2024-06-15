@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+    <!-- ////////// -->
+    <BehaviorTree ID="BehaviorTree">
+            <Control ID="SwitchEvent" case_1="StartBuildMap" case_10="StopNavi" case_11="OnNaviDone" case_12="NotifyDropEvent" case_13="NotifyCollisionEvent" case_14="NotifyEStopEvent" case_15="NotifyChargingEvent" case_16="NotifyCriticalHwErrEvent" case_17="StartHa" case_18="StopHa" case_19="SetNaviHalfPoints" case_2="PauseBuildMap" case_3="ResumeBuildMap" case_4="StopBuildMap" case_5="LoadMap" case_6="SaveMap" case_7="StartNavi" case_8="PauseNavi" case_9="ResumeNavi" variable="{robot_event}">
+                <Fallback name="StartBuildMapFallback">
+                    <Sequence name="StartBuildMapSequnce">
+                        <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="CHARGING,IDLE" success_code="0"/>
+                        <!-- <Inverter name="StartBuildMapInChargingInverter">
+                            <Condition ID="IsChargingLine" failure_code="0" on_response_code="{robot_event_response}" success_code="-201"/>
+                        </Inverter> -->
+                        <Action ID="ActionStartBuildMap"/>
+                        <Action ID="ActionStateCombo" distinct_event="" robot_state="MAPPING"/>
+                    </Sequence>
+                    <Condition ID="IsProcessingState" failure_code="-201" on_response_code="{robot_event_response}" robot_state="MAPPING" success_code="-202"/>
+                </Fallback>
+                <Sequence name="PauseBuildMapSequence">
+                    <Condition ID="IsProcessingState" failure_code="-302" on_response_code="{robot_event_response}" robot_state="MAPPING" success_code="0"/>
+                    <Action ID="ActionPauseBuildMap"/>
+                </Sequence>
+                <Sequence name="ResumeBuildMapSequence">
+                    <Condition ID="IsProcessingState" failure_code="-302" on_response_code="{robot_event_response}" robot_state="MAPPING" success_code="0"/>
+                    <Action ID="ActionResumeBuildMap"/>
+                </Sequence>
+                <Sequence name="StopBuildMapFallback">
+                    <ForceSuccess name="StopBuildMapForceSuccess">
+                        <Action ID="ActionStopBuildMap"/>
+                    </ForceSuccess>
+                    <Action ID="ActionStateWriteOff" distinct_event="" robot_state="MAPPING"/>
+                </Sequence>
+                <Sequence name="LoadMapSequence">
+                    <Action ID="ActionLoadMap"/>
+                </Sequence>
+                <Sequence name="SaveMapSequence">
+                    <Action ID="ActionSaveMap"/>
+                </Sequence>
+                <Fallback name="StartNaviFallback">
+                    <Sequence name="StartNaviMotioningSequence">
+                        <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="MOTIONING" success_code="0"/>
+                        <ForceSuccess name="StartNaviMotioningForceSuccess">
+                            <Fallback name="StartNaviMotioningFallback">
+                                <Condition ID="IsConflictTask" failure_code="0" on_response_code="{robot_event_response}" success_code="-13"/>
+                                <Sequence name="StartNaviMotioningRestartSequence">
+                                    <Action ID="ActionCancelNavi"/>
+                                    <Action ID="ActionStateWriteOff" distinct_event="" robot_state="MOTIONING"/>
+                                    <Action ID="ActionStartNavi"/>
+                                    <Action ID="ActionStateCombo" distinct_event="" robot_state="MOTIONING"/>
+                                </Sequence>
+                            </Fallback>
+                        </ForceSuccess>
+                    </Sequence>
+                    <Sequence name="StartNaviIdleSequence">
+                        <Condition ID="IsProcessingState" failure_code="-10" on_response_code="{robot_event_response}" robot_state="CHARGING,IDLE" success_code="0"/>
+                        <!-- <Inverter name="StartNaviIdleInverter">
+                            <Condition ID="IsChargingLine" failure_code="0" on_response_code="{robot_event_response}" success_code="-8"/>
+                        </Inverter> -->
+                        <Fallback name="StartNaviIdleFallback">
+                            <Sequence name="StartNaviIdleCompletedSequence">
+                                <Condition ID="IsCompletedTask"/>
+                                <ForceSuccess name="StartNaviIdleForceSuccess">
+                                    <Action ID="ActionOnNaviDoneRepeat"/>
+                                </ForceSuccess>
+                            </Sequence>
+                            <Sequence name="StartNaviIdleNewTaskSequence">
+                                <Action ID="ActionStartNavi"/>
+                                <Action ID="ActionStateCombo" distinct_event="" robot_state="MOTIONING"/>
+                            </Sequence>
+                        </Fallback>
+                    </Sequence>
+                </Fallback>
+                <Sequence name="PauseNaviSequence">
+                    <Condition ID="IsProcessingState" failure_code="-2" on_response_code="{robot_event_response}" robot_state="MOTIONING" success_code="0"/>
+                    <Action ID="ActionPauseNavi"/>
+                </Sequence>
+                <Sequence name="ResumeNaviSequence">
+                    <Condition ID="IsProcessingState" failure_code="-2" on_response_code="{robot_event_response}" robot_state="MOTIONING" success_code="0"/>
+                    <Action ID="ActionResumeNavi"/>
+                </Sequence>
+                <Sequence name="StopNaviFallback">
+                    <ForceSuccess name="StopNaviForceSuccess">
+                        <Action ID="ActionStopNavi"/>
+                    </ForceSuccess>
+                    <Action ID="ActionStateWriteOff" distinct_event="" robot_state="MOTIONING"/>
+                </Sequence>
+                <Fallback name="OnNaviDoneFallback">
+                    <Sequence name="OnNaviDoneTmpStopHalfSequence">
+                        <Condition ID="IsTmpStopHalfPointSuccess"/>
+                        <Action ID="ActionStartNaviAsync" on_response_code="{robot_event_response}"/>
+                        <ForceSuccess>
+                            <Action ID="ActionPauseNavi"/>
+                        </ForceSuccess>
+                    </Sequence>
+                    <Sequence name="OnNaviDoneHalfSequence">
+                        <Condition ID="IsHalfPointsSuccess"/>
+                        <Action ID="ActionStartNaviAsync" on_response_code="{robot_event_response}"/>
+                    </Sequence>
+                    <Sequence name="OnNaviDoneSequence">
+                        <Action ID="ActionStateWriteOff" distinct_event="" robot_state="MOTIONING"/>
+                        <Action ID="ActionOnNaviDone"/>
+                    </Sequence>
+                </Fallback>
+                <IfThenElse name="NotifyDropEventIfThenElse">
+                    <Fallback name="NotifyDropEventFallback">
+                        <BlackboardCheckInt return_on_mismatch="FAILURE" value_A="{robot_drop_type}" value_B="101">
+                            <AlwaysSuccess/>
+                        </BlackboardCheckInt>
+                        <BlackboardCheckInt return_on_mismatch="FAILURE" value_A="{robot_drop_type}" value_B="103">
+                            <AlwaysSuccess/>
+                        </BlackboardCheckInt>
+                    </Fallback>
+                    <Sequence name="NotifyDropEventDetectedSequence">
+                        <ForceSuccess>
+                            <SubTree ID="TreePauseTask" __shared_blackboard="true"/>
+                        </ForceSuccess>
+                        <Action ID="ActionStateCombo" distinct_event="drop" robot_state="STOP"/>
+                    </Sequence>
+                    <Sequence name="NotifyDropEventResumedSequence">
+                        <Action ID="ActionStateWriteOff" distinct_event="drop" robot_state="STOP"/>
+                        <SubTree ID="TreeResumeTask" __shared_blackboard="true"/>
+                    </Sequence>
+                </IfThenElse>
+                <IfThenElse name="NotifyCollisionEventIfThenElse">
+                    <BlackboardCheckInt return_on_mismatch="FAILURE" value_A="{robot_collision_type}" value_B="111">
+                        <AlwaysSuccess/>
+                    </BlackboardCheckInt>
+                    <Sequence name="NotifyCollisionEventDetectedSequence">
+                        <ForceSuccess>
+                            <SubTree ID="TreePauseTask" __shared_blackboard="true"/>
+                        </ForceSuccess>
+                        <Action ID="ActionStateCombo" distinct_event="collision" robot_state="STOP"/>
+                    </Sequence>
+                    <Sequence name="NotifyCollisionEventResumedSequence">
+                        <Action ID="ActionStateWriteOff" distinct_event="collision" robot_state="STOP"/>
+                        <SubTree ID="TreeResumeTask" __shared_blackboard="true"/>
+                    </Sequence>
+                </IfThenElse>
+                <IfThenElse name="NotifyEStopEventIfThenElse">
+                    <BlackboardCheckInt name="NotifyEStopEventEmergencyDown" return_on_mismatch="FAILURE" value_A="{robot_emergency_type}" value_B="120">
+                        <AlwaysSuccess name="NotifyEStopEventAlwaysSuccess"/>
+                    </BlackboardCheckInt>
+                    <Sequence name="NotifyEStopEventDownSequence">
+                        <ForceSuccess name="NotifyEStopEventForceSuccess">
+                            <SubTree ID="TreePauseTask" __shared_blackboard="true"/>
+                        </ForceSuccess>
+                        <Action ID="ActionStateCombo" distinct_event="estop" robot_state="STOP"/>
+                    </Sequence>
+                    <Sequence name="NotifyEStopEventUpSequence">
+                        <Action ID="ActionStateWriteOff" distinct_event="estop" robot_state="STOP"/>
+                        <SubTree ID="TreeResumeTask" __shared_blackboard="true"/>
+                    </Sequence>
+                </IfThenElse>
+                <IfThenElse name="NotifyChargingEventIfThenElse">
+                    <BlackboardCheckInt return_on_mismatch="FAILURE" value_A="{robot_charging_type}" value_B="-1">
+                        <AlwaysSuccess/>
+                    </BlackboardCheckInt>
+                    <Action ID="ActionStateWriteOff" distinct_event="" robot_state="CHARGING"/>
+                    <Sequence name="NotifyChargingEventOnSequence">
+                        <ForceSuccess name="NotifyChargingEventForceSuccess">
+                            <SubTree ID="TreeCancelTaskMarked" __shared_blackboard="true"/>
+                        </ForceSuccess>
+                        <Action ID="ActionStateCombo" distinct_event="" robot_state="CHARGING"/>
+                    </Sequence>
+                </IfThenElse>
+                <IfThenElse name="NotifyCriticalHwErrEventIfThenElse">
+                    <BlackboardCheckInt return_on_mismatch="FAILURE" value_A="{robot_hw_error_type}" value_B="0">
+                        <AlwaysSuccess name="NotifyCriticalHwErrEventAlwaysSuccess"/>
+                    </BlackboardCheckInt>
+                    <Sequence name="NotifyCriticalHwErrEventHappenSequence">
+                        <ForceSuccess name="NotifyCriticalHwErrEventForceSuccess">
+                            <SubTree ID="TreePauseTask" __shared_blackboard="true"/>
+                        </ForceSuccess>
+                        <Action ID="ActionStateCombo" distinct_event="" robot_state="ERROR"/>
+                    </Sequence>
+                    <Sequence name="NotifyCriticalHwErrEventResumeSequence">
+                        <Action ID="ActionStateWriteOff" distinct_event="" robot_state="ERROR"/>
+                        <SubTree ID="TreeResumeTask" __shared_blackboard="true"/>
+                    </Sequence>
+                </IfThenElse>
+                <Sequence name="StartHaSequence">
+                    <ForceSuccess name="StartHaForceSuccess">
+                        <SubTree ID="TreePauseTask" __shared_blackboard="true"/>
+                    </ForceSuccess>
+                    <Action ID="ActionStateCombo" distinct_event="" robot_state="TELEOPING"/>
+                </Sequence>
+                <Sequence name="StopHaSequence">
+                    <Action ID="ActionStateWriteOff" distinct_event="" robot_state="TELEOPING"/>
+                    <ForceSuccess name="StopHaForceSuccess">
+                        <SubTree ID="TreeResumeTask" __shared_blackboard="true"/>
+                    </ForceSuccess>
+                </Sequence>
+                <Sequence name="SetNaviHalfPointsSequence">
+                    <Condition ID="IsProcessingState" failure_code="-2" on_response_code="{robot_event_response}" robot_state="MOTIONING" success_code="0"/>
+                    <Action ID="ActionSetNaviHalfPoints"/>
+                    <Action ID="ActionCancelNaviMarked"/>
+                    <Action ID="ActionStartNaviAsync" on_response_code="{robot_event_response}"/>
+                </Sequence>
+                <AlwaysFailure/>
+            </Control>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <BehaviorTree ID="TreeCancelTaskMarked">
+        <Fallback name="TreeStopTaskFallback">
+            <Sequence name="TreeStopTaskMappingSequence">
+                <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="MAPPING" success_code="0"/>
+                <Action ID="ActionStopBuildMap"/>
+                <Action ID="ActionStateWriteOff" distinct_event="" robot_state="MAPPING"/>
+            </Sequence>
+            <Sequence name="TreeStopTaskMotioningSequence">
+                <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="MOTIONING" success_code="0"/>
+                <Action ID="ActionCancelNaviMarked"/>
+                <Action ID="ActionStateWriteOff" distinct_event="" robot_state="MOTIONING"/>
+            </Sequence>
+        </Fallback>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <BehaviorTree ID="TreePauseTask">
+        <Fallback name="TreePauseTaskFallback">
+            <Sequence name="TreePauseTaskMappingSequence">
+                <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="MAPPING" success_code="0"/>
+                <Action ID="ActionPauseBuildMap"/>
+            </Sequence>
+            <Sequence name="TreeMotioningTaskSequence">
+                <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="MOTIONING" success_code="0"/>
+                <Action ID="ActionPauseNavi"/>
+            </Sequence>
+        </Fallback>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <BehaviorTree ID="TreeResumeTask">
+        <Fallback name="TreeResumeTaskFallback">
+            <Sequence name="TreeResumeTaskMappingSequence">
+                <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="MAPPING" success_code="0"/>
+                <Action ID="ActionResumeBuildMap"/>
+            </Sequence>
+            <Sequence name="TreeResumeTaskMotioningSequence">
+                <Condition ID="IsProcessingState" failure_code="0" on_response_code="{robot_event_response}" robot_state="MOTIONING" success_code="0"/>
+                <Action ID="ActionResumeNavi"/>
+            </Sequence>
+        </Fallback>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="ActionCancelNavi"/>
+        <Action ID="ActionCancelNaviMarked"/>
+        <Action ID="ActionLoadMap"/>
+        <Action ID="ActionOnNaviDone"/>
+        <Action ID="ActionOnNaviDoneRepeat"/>
+        <Action ID="ActionPauseBuildMap"/>
+        <Action ID="ActionPauseNavi"/>
+        <Action ID="ActionResumeBuildMap"/>
+        <Action ID="ActionResumeNavi"/>
+        <Action ID="ActionSaveMap"/>
+        <Action ID="ActionSetNaviHalfPoints"/>
+        <Action ID="ActionStartBuildMap"/>
+        <Action ID="ActionStartNavi"/>
+        <Action ID="ActionStartNaviAsync">
+            <output_port default="{robot_event_response}" name="on_response_code"/>
+        </Action>
+        <Action ID="ActionStateCombo">
+            <input_port name="distinct_event"/>
+            <input_port name="robot_state"/>
+        </Action>
+        <Action ID="ActionStateWriteOff">
+            <input_port name="distinct_event"/>
+            <input_port name="robot_state"/>
+        </Action>
+        <Action ID="ActionStopBuildMap"/>
+        <Action ID="ActionStopNavi"/>
+        <Condition ID="IsBatterySafe"/>
+        <!-- <Condition ID="IsChargingLine">
+            <input_port default="0" name="failure_code"/>
+            <input_port default="{robot_event_response}" name="on_response_code"/>
+            <input_port default="-8" name="success_code"/>
+        </Condition> -->
+        <Condition ID="IsCompletedTask"/>
+        <Condition ID="IsConflictTask">
+            <input_port default="-13" name="failure_code"/>
+            <output_port default="{robot_event_response}" name="on_response_code"/>
+            <input_port default="0" name="success_code"/>
+        </Condition>
+        <Condition ID="IsHalfPointsSuccess"/>
+        <Condition ID="IsProcessedState">
+            <input_port default="0" name="failure_code"/>
+            <output_port default="{robot_event_response}" name="on_response_code"/>
+            <input_port name="robot_state"/>
+            <input_port default="0" name="success_code"/>
+        </Condition>
+        <Condition ID="IsProcessingState">
+            <input_port default="0" name="failure_code"/>
+            <output_port default="{robot_event_response}" name="on_response_code">error code</output_port>
+            <input_port name="robot_state">if being current state</input_port>
+            <input_port default="0" name="success_code"/>
+        </Condition>
+        <Control ID="SwitchEvent">
+            <input_port name="case_1"/>
+            <input_port name="case_10"/>
+            <input_port name="case_11"/>
+            <input_port name="case_12"/>
+            <input_port name="case_13"/>
+            <input_port name="case_14"/>
+            <input_port name="case_15"/>
+            <input_port name="case_16"/>
+            <input_port name="case_17"/>
+            <input_port name="case_18"/>
+            <input_port name="case_19"/>
+            <input_port name="case_2"/>
+            <input_port name="case_3"/>
+            <input_port name="case_4"/>
+            <input_port name="case_5"/>
+            <input_port name="case_6"/>
+            <input_port name="case_7"/>
+            <input_port name="case_8"/>
+            <input_port name="case_9"/>
+            <input_port default="{robot_event}" name="variable"/>
+        </Control>
+        <SubTree ID="TreeCancelTaskMarked">
+            <input_port default="true" name="__shared_blackboard">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+        </SubTree>
+        <SubTree ID="TreePauseTask">
+            <input_port default="true" name="__shared_blackboard">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+        </SubTree>
+        <SubTree ID="TreeResumeTask">
+            <input_port default="true" name="__shared_blackboard">If false (default), the Subtree has an isolated blackboard and needs port remapping</input_port>
+        </SubTree>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>
+

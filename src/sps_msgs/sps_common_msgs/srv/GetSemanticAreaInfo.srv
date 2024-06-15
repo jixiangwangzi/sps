@@ -1,0 +1,24 @@
+std_msgs/Header header
+float64 pose_x
+float64 pose_y
+
+---
+# Result code defintions
+int32 SUCCESS=0
+int32 FAILED=-1
+
+int32 UNDEFINED_AREA = -1
+int32 GENERAL_SPEED_LIMIT_AREA = 0
+int32 STEEP_SLOPE_AREA =  1
+int32 CLOSE_SONAR_AREA =  2
+int32 LONG_CORRIDOR_AREA =  3
+int32 NARROW_CHANNEL_AREA =  4
+int32 SPECIAL_INDUCTION_AREA =  5
+int32 NOISE_AREA =  6
+
+
+int32 result
+string description
+float32 area_speed
+int32 area_type
+SpecialAreas special_areas

@@ -1,0 +1,15 @@
+uint8 SET = 0
+uint8 GET = 1
+
+std_msgs/Header header
+uint8 ctrl_cmd
+string json_params
+---
+
+int32 result
+string json_report
+
+int32 SUCCESS = 0
+int32 FAILED = -7101
+
+

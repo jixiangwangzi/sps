@@ -1,0 +1,87 @@
+cmake_minimum_required(VERSION 3.5)
+project(sps_common_msgs)
+
+find_package(ament_cmake REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/PixelPose.msg"
+  "msg/SpecialAreas.msg"
+  "msg/VirtualWall.msg"
+  "msg/BitMap.msg"
+  "msg/LiftPoi.msg"
+  "msg/InitialSlamPose.msg"
+  "msg/InitialSlamState.msg"
+  "msg/EngineState.msg"
+  "msg/LaserFrame.msg"
+  "msg/LaserPoint.msg"
+  "msg/LocalState.msg"
+  "msg/LocalizationStatus.msg"
+  "msg/MapInfo.msg"
+  "msg/SpsNaviState.msg"
+  "msg/RdmAlarm.msg"
+  "msg/SensorState.msg"
+  "msg/VersionInfo.msg"
+  "msg/BatteryState.msg"
+  "msg/UpdateNaviMap.msg"
+  "msg/PointArray.msg"
+  "msg/Virtualwalls.msg"
+  "msg/SemanticsArea.msg"
+  "msg/RobotStateAlarm.msg"
+  "srv/SpsLoadMap.srv"
+  "srv/GetMapInfo.srv"
+  "srv/PublishMapData.srv"
+  "srv/GetCurrRobotPose.srv"
+  "srv/ChangeWordPoseToPixelPose.srv"
+  "srv/ChangePixelPoseToWordPose.srv"
+  "srv/QueryPoseByName.srv"
+  "srv/QueryPoiTypeByPose.srv"
+  "srv/GoalValidCheck.srv"
+  "srv/QueryChargePileByName.srv"
+  "srv/SetDefaultChargePile.srv"
+  "srv/GetDefaultChargePile.srv"
+  "srv/GetNearestChargePile.srv"
+  "srv/PublishInitialPixelPoseZero.srv"
+  "srv/GetSemanticAreaInfo.srv"
+  "srv/PublishLiftPoint.srv"
+  "srv/QueryLiftPoiType.srv"
+  "srv/PointLiftInsideCheck.srv"
+  "srv/GetRobotLiftPose.srv"
+  "srv/GetRobotMapPose.srv"
+  "srv/GetLiftCheckPixelPoint.srv"
+  "srv/GetLiftOutAngle.srv"
+  "srv/ChargingToDock.srv"
+  "srv/CmdCtrl.srv"
+  "srv/GetNaviPath.srv"
+  "srv/LoopclosureMap.srv"
+  "srv/MoveTo.srv"
+  "srv/NaviAverageArea.srv"
+  "srv/TaskNaviCmd.srv"
+  "srv/NaviEdgeways.srv"
+  "srv/NaviPath.srv"
+  "srv/NaviPoses.srv"
+  "srv/NaviToPose.srv"
+  "srv/SaveMap.srv"
+  "srv/SetParamData.srv"
+  "srv/SetPoseInitialize.srv"
+  "srv/SetPredictPose.srv"
+  "srv/SetPredictPoses.srv"
+  "srv/SetSlamModel.srv"
+  "srv/StartMapping.srv"
+  "srv/StartMove.srv"
+  "srv/SwitchSensor.srv"
+  "srv/AidedPose.srv"
+  "srv/Mode.srv"
+  "srv/UpdateMap.srv"
+  "srv/GetSemanticsAreas.srv"
+  "srv/ParamsData.srv"
+  "srv/GetLiftPoiInfo.srv"
+  DEPENDENCIES builtin_interfaces geometry_msgs std_msgs nav_msgs
+)
+
+# ament_export_dependencies(rosidl_default_runtime)
+
+ament_package()
